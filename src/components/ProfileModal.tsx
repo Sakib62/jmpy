@@ -151,23 +151,24 @@ export default function ProfileModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       {/* Main Profile Modal */}
       <div
-        className={`bg-white rounded-lg shadow-lg w-full max-w-2xl p-0 relative flex animate-fade-in min-h-[400px] ${
+        className={`bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl shadow-blue-200/40 border border-blue-100 w-full max-w-full sm:max-w-lg md:max-w-2xl min-w-[320px] p-0 relative flex flex-row animate-fade-in min-h-[320px] max-h-[90vh] overflow-x-auto ${
           showLogoutPrompt ? "pointer-events-none blur-sm select-none" : ""
         }`}
+        style={{ overflowX: "auto" }}
       >
         <button
-          className="absolute top-3 right-3 text-gray-400 hover:text-gray-700"
+          className="absolute top-3 right-3 z-20 text-gray-400 hover:text-gray-700"
           onClick={onClose}
           aria-label="Close"
         >
           <FiX className="w-6 h-6" />
         </button>
-        {/* Left: Tabs + Logout */}
-        <div className="w-1/3 min-w-[140px] max-w-[180px] border-r bg-gray-50 flex flex-col py-6 px-2 gap-2 justify-between">
-          <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-4 px-2">
-              Profile
-            </h2>
+        {/* Tabs: horizontal on mobile, vertical sidebar on md+ */}
+        <div className="w-1/3 min-w-[120px] max-w-[140px] border-r bg-blue-50 flex flex-col py-4 px-2 gap-2 justify-between rounded-l-2xl min-w-fit">
+          <div className="flex flex-col gap-4">
+            <div className="mb-4">
+              <h2 className="text-lg font-bold text-gray-900 px-2">Profile</h2>
+            </div>
             {TABS.map((t) => (
               <button
                 key={t.key}
@@ -184,7 +185,7 @@ export default function ProfileModal({
               </button>
             ))}
           </div>
-          <div className="flex flex-col items-center mb-2">
+          <div className="flex flex-col items-center mb-2 mt-8">
             <button
               onClick={() => setShowLogoutPrompt(true)}
               className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-lg shadow disabled:opacity-60"
@@ -196,7 +197,7 @@ export default function ProfileModal({
           </div>
         </div>
         {/* Right: Tab Content */}
-        <div className="flex-1 p-8 pt-16 flex flex-col justify-start">
+        <div className="flex-1 p-4 md:p-8 pt-12 md:pt-16 flex flex-col justify-start bg-white rounded-b-2xl md:rounded-b-none md:rounded-r-2xl min-w-[320px] overflow-x-auto">
           {tab === "email" && (
             <form
               onSubmit={handleEmailChange}

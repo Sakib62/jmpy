@@ -57,7 +57,6 @@ export default function QRCodePopover({
 
   return (
     <div className="flex flex-col items-center w-full animate-fade-in-up">
-      <span className="text-gray-800 font-semibold mb-1">QR Code:</span>
       <div
         className="bg-white p-4 rounded-xl shadow border border-gray-200 flex flex-col items-center"
         ref={qrContainerRef}
@@ -87,7 +86,6 @@ export default function QRCodePopover({
           <FiX className="w-5 h-5 text-gray-700" />
         </button>
       </div>
-      <span className="text-xs text-gray-500 mt-2">Scan to open short URL</span>
     </div>
   );
 }
