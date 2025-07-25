@@ -1,7 +1,7 @@
 import type { User } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { FiEye, FiEyeOff, FiMail } from "react-icons/fi";
 import { supabase } from "../utils/supabaseClient";
 
 export default function AuthModal({
@@ -25,12 +25,20 @@ export default function AuthModal({
   const [touchedEmail, setTouchedEmail] = useState(false);
   const [touchedPw, setTouchedPw] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showForgotPw, setShowForgotPw] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotSubmitted, setForgotSubmitted] = useState(false);
 
   useEffect(() => {
     setSignInEmail("");
     setSignInPassword("");
     setSignUpEmail("");
     setSignUpPassword("");
+    setShowForgotPw(false);
+    setForgotEmail("");
+    setForgotLoading(false);
+    setForgotSubmitted(false);
     if (open) setIsSignUp(false); // Always default to sign-in when modal opens
   }, [open]);
 
@@ -92,6 +100,34 @@ export default function AuthModal({
     }
   };
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    (typeof window !== "undefined" ? window.location.origin : "");
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setForgotSubmitted(true);
+    setForgotLoading(true);
+    if (!validateEmail(forgotEmail)) {
+      setForgotLoading(false);
+      return;
+    }
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
+        redirectTo: baseUrl + "/reset",
+      });
+      if (error) throw error;
+      toast.success("Check your email for a password reset link.");
+      setShowForgotPw(false);
+    } catch (err: unknown) {
+      let msg = "Failed to send reset email";
+      if (err instanceof Error) msg = err.message;
+      toast.error(msg);
+    } finally {
+      setForgotLoading(false);
+    }
+  };
+
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
@@ -102,148 +138,202 @@ export default function AuthModal({
         >
           &times;
         </button>
-        <h2 className="text-xl font-bold mb-4 text-center text-gray-900">
-          {isSignUp ? "Sign Up" : "Sign In"}
-        </h2>
-        <form className="flex flex-col gap-4" onSubmit={handleAuth}>
-          {isSignUp ? (
-            <>
+        {showForgotPw ? (
+          <>
+            <h2 className="text-xl font-bold mb-4 text-center text-gray-900 flex items-center justify-center gap-2">
+              <FiMail className="inline-block mb-1" /> Reset Password
+            </h2>
+            <form
+              className="flex flex-col gap-4"
+              onSubmit={handleForgotPassword}
+            >
               <input
                 type="email"
                 required
-                placeholder="Email"
+                placeholder="Enter your email"
                 className="border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
-                value={signUpEmail}
-                onChange={(e) => setSignUpEmail(e.target.value)}
-                onBlur={() => setTouchedEmail(true)}
-                disabled={loading}
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value)}
+                disabled={forgotLoading}
               />
-              {(touchedEmail || formSubmitted) &&
-                signUpEmail &&
-                !validateEmail(signUpEmail) && (
+              {forgotSubmitted &&
+                forgotEmail &&
+                !validateEmail(forgotEmail) && (
                   <div className="text-xs text-red-600 mt-0 ml-1">
                     Enter a valid email address.
                   </div>
                 )}
-              <div className="relative w-full">
-                <input
-                  type={showPw ? "text" : "password"}
-                  required
-                  placeholder="Password"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm pr-10"
-                  value={signUpPassword}
-                  onChange={(e) => setSignUpPassword(e.target.value)}
-                  onBlur={() => setTouchedPw(true)}
-                  disabled={loading}
-                />
-                <button
-                  type="button"
-                  tabIndex={-1}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                  onClick={() => setShowPw((v) => !v)}
-                  aria-label={showPw ? "Hide password" : "Show password"}
-                >
-                  {showPw ? <FiEyeOff /> : <FiEye />}
-                </button>
-              </div>
-              {(touchedPw || formSubmitted) &&
-                signUpPassword &&
-                !validatePassword(signUpPassword) && (
-                  <div className="text-xs text-red-600 mt-0 ml-1">
-                    Password must be at least 8 characters and include an
-                    uppercase letter, a lowercase letter, a number, and a
-                    symbol.
+              <button
+                type="submit"
+                className="bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+                disabled={forgotLoading}
+              >
+                {forgotLoading ? "Sending..." : "Send Reset Link"}
+              </button>
+            </form>
+            <div className="text-sm text-center mt-3 text-gray-700">
+              <button
+                className="text-blue-600 hover:underline"
+                onClick={() => setShowForgotPw(false)}
+              >
+                Back to Sign In
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <h2 className="text-xl font-bold mb-4 text-center text-gray-900">
+              {isSignUp ? "Sign Up" : "Sign In"}
+            </h2>
+            <form className="flex flex-col gap-4" onSubmit={handleAuth}>
+              {isSignUp ? (
+                <>
+                  <input
+                    type="email"
+                    required
+                    placeholder="Email"
+                    className="border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+                    value={signUpEmail}
+                    onChange={(e) => setSignUpEmail(e.target.value)}
+                    onBlur={() => setTouchedEmail(true)}
+                    disabled={loading}
+                  />
+                  {(touchedEmail || formSubmitted) &&
+                    signUpEmail &&
+                    !validateEmail(signUpEmail) && (
+                      <div className="text-xs text-red-600 mt-0 ml-1">
+                        Enter a valid email address.
+                      </div>
+                    )}
+                  <div className="relative w-full">
+                    <input
+                      type={showPw ? "text" : "password"}
+                      required
+                      placeholder="Password"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm pr-10"
+                      value={signUpPassword}
+                      onChange={(e) => setSignUpPassword(e.target.value)}
+                      onBlur={() => setTouchedPw(true)}
+                      disabled={loading}
+                    />
+                    <button
+                      type="button"
+                      tabIndex={-1}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                      onClick={() => setShowPw((v) => !v)}
+                      aria-label={showPw ? "Hide password" : "Show password"}
+                    >
+                      {showPw ? <FiEyeOff /> : <FiEye />}
+                    </button>
                   </div>
-                )}
-            </>
-          ) : (
-            <>
-              <input
-                type="email"
-                required
-                placeholder="Email"
-                className="border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
-                value={signInEmail}
-                onChange={(e) => setSignInEmail(e.target.value)}
-                onBlur={() => setTouchedEmail(true)}
+                  {(touchedPw || formSubmitted) &&
+                    signUpPassword &&
+                    !validatePassword(signUpPassword) && (
+                      <div className="text-xs text-red-600 mt-0 ml-1">
+                        Password must be at least 8 characters and include an
+                        uppercase letter, a lowercase letter, a number, and a
+                        symbol.
+                      </div>
+                    )}
+                </>
+              ) : (
+                <>
+                  <input
+                    type="email"
+                    required
+                    placeholder="Email"
+                    className="border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+                    value={signInEmail}
+                    onChange={(e) => setSignInEmail(e.target.value)}
+                    onBlur={() => setTouchedEmail(true)}
+                    disabled={loading}
+                  />
+                  {(touchedEmail || formSubmitted) &&
+                    signInEmail &&
+                    !validateEmail(signInEmail) && (
+                      <div className="text-xs text-red-600 mt-0 ml-1">
+                        Enter a valid email address.
+                      </div>
+                    )}
+                  <div className="relative w-full">
+                    <input
+                      type={showPw ? "text" : "password"}
+                      required
+                      placeholder="Password"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm pr-10"
+                      value={signInPassword}
+                      onChange={(e) => setSignInPassword(e.target.value)}
+                      onBlur={() => setTouchedPw(true)}
+                      disabled={loading}
+                    />
+                    <button
+                      type="button"
+                      tabIndex={-1}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                      onClick={() => setShowPw((v) => !v)}
+                      aria-label={showPw ? "Hide password" : "Show password"}
+                    >
+                      {showPw ? <FiEyeOff /> : <FiEye />}
+                    </button>
+                  </div>
+                  {(touchedPw || formSubmitted) &&
+                    signInPassword &&
+                    !validatePassword(signInPassword) && (
+                      <div className="text-xs text-red-600 mt-0 ml-1">
+                        Password must be at least 8 characters and include an
+                        uppercase letter, a lowercase letter, a number, and a
+                        symbol.
+                      </div>
+                    )}
+                </>
+              )}
+              <button
+                type="submit"
+                className="bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
                 disabled={loading}
-              />
-              {(touchedEmail || formSubmitted) &&
-                signInEmail &&
-                !validateEmail(signInEmail) && (
-                  <div className="text-xs text-red-600 mt-0 ml-1">
-                    Enter a valid email address.
-                  </div>
-                )}
-              <div className="relative w-full">
-                <input
-                  type={showPw ? "text" : "password"}
-                  required
-                  placeholder="Password"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm pr-10"
-                  value={signInPassword}
-                  onChange={(e) => setSignInPassword(e.target.value)}
-                  onBlur={() => setTouchedPw(true)}
-                  disabled={loading}
-                />
-                <button
-                  type="button"
-                  tabIndex={-1}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                  onClick={() => setShowPw((v) => !v)}
-                  aria-label={showPw ? "Hide password" : "Show password"}
-                >
-                  {showPw ? <FiEyeOff /> : <FiEye />}
-                </button>
-              </div>
-              {(touchedPw || formSubmitted) &&
-                signInPassword &&
-                !validatePassword(signInPassword) && (
-                  <div className="text-xs text-red-600 mt-0 ml-1">
-                    Password must be at least 8 characters and include an
-                    uppercase letter, a lowercase letter, a number, and a
-                    symbol.
-                  </div>
-                )}
-            </>
-          )}
-          <button
-            type="submit"
-            className="bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-            disabled={loading}
-          >
-            {loading
-              ? isSignUp
-                ? "Signing up..."
-                : "Signing in..."
-              : isSignUp
-              ? "Sign Up"
-              : "Sign In"}
-          </button>
-        </form>
-        <div className="text-sm text-center mt-3 text-gray-700">
-          {isSignUp ? (
-            <>
-              Already have an account?{" "}
-              <button
-                className="text-blue-600 hover:underline"
-                onClick={() => setIsSignUp(false)}
               >
-                Sign In
+                {loading
+                  ? isSignUp
+                    ? "Signing up..."
+                    : "Signing in..."
+                  : isSignUp
+                  ? "Sign Up"
+                  : "Sign In"}
               </button>
-            </>
-          ) : (
-            <>
-              Don&apos;t have an account?{" "}
-              <button
-                className="text-blue-600 hover:underline"
-                onClick={() => setIsSignUp(true)}
-              >
-                Sign Up
-              </button>
-            </>
-          )}
-        </div>
+            </form>
+            <div className="text-sm text-center mt-3 text-gray-700">
+              {isSignUp ? (
+                <>
+                  Already have an account?{" "}
+                  <button
+                    className="text-blue-600 hover:underline"
+                    onClick={() => setIsSignUp(false)}
+                  >
+                    Sign In
+                  </button>
+                </>
+              ) : (
+                <>
+                  Don&apos;t have an account?{" "}
+                  <button
+                    className="text-blue-600 hover:underline"
+                    onClick={() => setIsSignUp(true)}
+                  >
+                    Sign Up
+                  </button>
+                  <br />
+                  <button
+                    className="text-blue-600 hover:underline mt-2"
+                    onClick={() => setShowForgotPw(true)}
+                    type="button"
+                  >
+                    Forgot your password?
+                  </button>
+                </>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
