@@ -1,4 +1,5 @@
 import type { User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 import { FiLink } from "react-icons/fi";
 
 export default function Header({
@@ -12,14 +13,22 @@ export default function Header({
   onMyUrls: () => void;
   onProfile: () => void;
 }) {
+  const router = useRouter();
+  const handleHomeClick = () => {
+    router.push("/");
+  };
   return (
-    <header className="w-full z-10 sticky top-0 bg-white/70 backdrop-blur-md shadow-md border-b border-gray-200 flex items-center px-6 py-3 md:py-4">
-      <div className="flex items-center gap-3">
+    <header className="w-full z-10 sticky top-0 bg-white/70 backdrop-blur-md shadow-md border-b border-gray-200 flex items-center px-2 py-2 md:px-6 md:py-4 flex-wrap">
+      <div
+        className="flex items-center gap-1 cursor-pointer group select-none"
+        onClick={handleHomeClick}
+        title="Go to homepage"
+      >
         <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-700 via-indigo-500 to-blue-400 flex items-center justify-center shadow">
           <FiLink className="w-6 h-6 text-white" />
         </div>
-        <span className="text-2xl font-bold text-gray-900 tracking-tight select-none">
-          Linkly
+        <span className="text-2xl font-bold text-gray-900 tracking-tight group-hover:text-blue-700 transition-colors">
+          jmpy
         </span>
       </div>
       <div className="ml-auto flex items-center gap-4">
@@ -32,7 +41,7 @@ export default function Header({
               My URLs
             </button>
             <div
-              className="w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center text-blue-800 font-bold ml-2 cursor-pointer"
+              className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-500 via-indigo-400 to-blue-400 flex items-center justify-center text-white font-bold ml-2 cursor-pointer"
               title={user.email ?? "User"}
               onClick={onProfile}
             >
