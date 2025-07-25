@@ -62,8 +62,12 @@ export default function ResetPasswordPage() {
       setTimeout(() => {
         router.replace("/");
       }, 1500);
-    } catch (err: any) {
-      toast.error(err.message || "Failed to update password");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("Failed to update password");
+      }
     } finally {
       setLoading(false);
     }

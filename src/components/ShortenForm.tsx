@@ -21,7 +21,6 @@ export default function ShortenForm({
     type: null,
   });
   const [customAlias, setCustomAlias] = useState("");
-  const [origin, setOrigin] = useState("");
   const [showQR, setShowQR] = useState(false);
 
   const baseUrl =
@@ -33,7 +32,6 @@ export default function ShortenForm({
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setOrigin(baseUrl);
       window.history.scrollRestoration = "manual";
       window.scrollTo({ top: 0, behavior: "auto" });
     }

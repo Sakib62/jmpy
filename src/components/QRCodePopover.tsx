@@ -36,8 +36,10 @@ export default function QRCodePopover({
     const ctx = canvas.getContext("2d");
     const img = new window.Image();
     img.onload = function () {
-      ctx && ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx && ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      }
       canvas.toBlob((blob) => {
         if (!blob) return;
         const urlObj = URL.createObjectURL(blob);
