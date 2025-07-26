@@ -151,73 +151,72 @@ export default function ProfileModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       {/* Main Profile Modal */}
       <div
-        className={`bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl shadow-blue-200/40 border border-blue-100 w-full max-w-full sm:max-w-lg md:max-w-2xl min-w-[320px] p-0 relative flex flex-row animate-fade-in min-h-[320px] max-h-[90vh] overflow-x-auto ${
+        className={`bg-gradient-to-br from-blue-100/90 via-cyan-50/80 to-blue-200/60 backdrop-blur-lg rounded-2xl shadow-2xl border border-cyan-200/40 w-[95%] max-w-[400px] sm:max-w-lg md:max-w-2xl min-w-[320px] p-0 relative flex flex-row animate-fade-in min-h-[400px] max-h-[90vh] overflow-x-auto overflow-y-hidden ${
           showLogoutPrompt ? "pointer-events-none blur-sm select-none" : ""
         }`}
-        style={{ overflowX: "auto" }}
       >
         <button
-          className="absolute top-3 right-3 z-20 text-gray-400 hover:text-gray-700"
+          className="absolute z-20 text-gray-400 top-3 right-3 hover:text-gray-700"
           onClick={onClose}
           aria-label="Close"
         >
           <FiX className="w-6 h-6" />
         </button>
-        {/* Tabs: horizontal on mobile, vertical sidebar on md+ */}
-        <div className="w-1/3 min-w-[120px] max-w-[140px] border-r bg-blue-50 flex flex-col py-4 px-2 gap-2 justify-between rounded-l-2xl min-w-fit">
+        {/* Tabs: vertical sidebar */}
+        <div className="w-1/3 min-w-[120px] max-w-[140px] border-r border-cyan-400/60 bg-gradient-to-b from-cyan-200/80 via-cyan-100/70 to-cyan-300/60 backdrop-blur-lg flex flex-col py-4 px-2 gap-2 justify-between rounded-l-2xl">
           <div className="flex flex-col gap-4">
             <div className="mb-4">
-              <h2 className="text-lg font-bold text-gray-900 px-2">Profile</h2>
+              <h2 className="px-2 text-lg font-bold text-gray-900">Profile</h2>
             </div>
             {TABS.map((t) => (
               <button
                 key={t.key}
-                className={`flex items-center w-full px-3 py-2 rounded-lg text-left font-medium transition-all mb-1 ${
+                className={`flex items-center w-full px-3 py-2 rounded-lg text-left font-medium transition-all mb-1 focus:outline-none focus:ring-0 focus:border-0 focus:shadow-none ${
                   tab === t.key
-                    ? "bg-blue-100 text-blue-700"
-                    : "text-gray-700 hover:bg-gray-200"
+                    ? "bg-white/90 text-cyan-700 shadow-sm border border-cyan-200/50"
+                    : "text-gray-700 hover:bg-white/50 hover:text-cyan-800"
                 }`}
                 onClick={() => setTab(t.key)}
                 disabled={tab === t.key}
               >
-                {t.icon}
+                <span className="hidden sm:inline">{t.icon}</span>
                 {t.label}
               </button>
             ))}
           </div>
-          <div className="flex flex-col items-center mb-2 mt-8">
+          <div className="flex flex-col items-center mt-8 mb-2">
             <button
               onClick={() => setShowLogoutPrompt(true)}
-              className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-lg shadow disabled:opacity-60"
+              className="flex flex-col items-center gap-2 px-4 py-2 text-sm font-semibold text-white transition-all bg-red-600 rounded-lg shadow sm:flex-row hover:bg-red-700 disabled:opacity-60 focus:outline-none focus:ring-0 focus:border-0 focus:shadow-none"
               disabled={logoutLoading}
             >
-              <FiLogOut className="w-5 h-5" />
+              <FiLogOut className="hidden w-4 h-4 sm:block" />
               Log Out
             </button>
           </div>
         </div>
         {/* Right: Tab Content */}
-        <div className="flex-1 p-4 md:p-8 pt-12 md:pt-16 flex flex-col justify-start bg-white rounded-b-2xl md:rounded-b-none md:rounded-r-2xl min-w-[320px] overflow-x-auto">
+        <div className="flex-1 p-4 md:p-6 pt-20 md:pt-16 flex flex-col justify-start bg-cyan-50/30 backdrop-blur-lg rounded-b-none md:rounded-r-2xl min-w-[280px] overflow-y-auto overflow-x-auto">
           {tab === "email" && (
             <form
               onSubmit={handleEmailChange}
-              className="max-w-sm mx-auto w-full mt-0"
+              className="w-full max-w-sm mx-auto mt-0"
             >
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
                   Current Email
                 </label>
-                <div className="text-gray-900 mb-2 select-all break-all cursor-default text-base font-medium">
+                <div className="mb-2 text-base font-medium text-gray-900 break-all cursor-default select-all">
                   {user?.email}
                 </div>
               </div>
               <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
                   New Email
                 </label>
                 <input
                   type="email"
-                  className="w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  className="w-full px-3 py-2 text-gray-900 placeholder-gray-400 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                   value={email}
                   placeholder="Enter new email"
                   onChange={(e) => setEmail(e.target.value)}
@@ -225,13 +224,15 @@ export default function ProfileModal({
                   required
                 />
               </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition-all disabled:opacity-60 mt-2"
-                disabled={emailLoading || email === user?.email}
-              >
-                {emailLoading ? "Updating..." : "Change Email"}
-              </button>
+              <div className="flex justify-center mt-4">
+                <button
+                  type="submit"
+                  className="p-2 font-semibold text-white transition-all bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 disabled:opacity-60"
+                  disabled={emailLoading || email === user?.email}
+                >
+                  {emailLoading ? "Updating..." : "Change Email"}
+                </button>
+              </div>
               {emailMsg && (
                 <div className="mt-2 text-sm text-center text-red-600">
                   {emailMsg}
@@ -242,15 +243,15 @@ export default function ProfileModal({
           {tab === "password" && (
             <form
               onSubmit={handlePwChange}
-              className="max-w-sm mx-auto w-full mt-0"
+              className="w-full max-w-sm mx-auto mt-0"
             >
-              <div className="mb-2 relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="relative mb-2">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
                   Current Password
                 </label>
                 <input
                   type={showCurrentPw ? "text" : "password"}
-                  className="w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 pr-10"
+                  className="w-full px-3 py-2 pr-10 text-gray-900 placeholder-gray-400 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                   value={currentPw}
                   placeholder="Current password"
                   onChange={(e) => setCurrentPw(e.target.value)}
@@ -261,7 +262,7 @@ export default function ProfileModal({
                 <button
                   type="button"
                   tabIndex={-1}
-                  className="absolute right-2 top-8 text-gray-500 hover:text-gray-700"
+                  className="absolute text-gray-500 right-2 top-8 hover:text-gray-700"
                   onClick={() => setShowCurrentPw((v) => !v)}
                   aria-label={showCurrentPw ? "Hide password" : "Show password"}
                 >
@@ -270,20 +271,20 @@ export default function ProfileModal({
                 {(touchedCurrent || formSubmitted) &&
                   currentPw &&
                   !validatePassword(currentPw) && (
-                    <div className="text-xs text-red-600 mt-1">
+                    <div className="mt-1 text-xs text-red-600">
                       Password must be at least 8 characters and include an
                       uppercase letter, a lowercase letter, a number, and a
                       special symbol.
                     </div>
                   )}
               </div>
-              <div className="mb-2 relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="relative mb-2">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
                   New Password
                 </label>
                 <input
                   type={showNewPw ? "text" : "password"}
-                  className="w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 pr-10"
+                  className="w-full px-3 py-2 pr-10 text-gray-900 placeholder-gray-400 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                   value={newPw}
                   placeholder="New password"
                   onChange={(e) => setNewPw(e.target.value)}
@@ -294,7 +295,7 @@ export default function ProfileModal({
                 <button
                   type="button"
                   tabIndex={-1}
-                  className="absolute right-2 top-8 text-gray-500 hover:text-gray-700"
+                  className="absolute text-gray-500 right-2 top-8 hover:text-gray-700"
                   onClick={() => setShowNewPw((v) => !v)}
                   aria-label={showNewPw ? "Hide password" : "Show password"}
                 >
@@ -303,20 +304,20 @@ export default function ProfileModal({
                 {(touchedNew || formSubmitted) &&
                   newPw &&
                   !validatePassword(newPw) && (
-                    <div className="text-xs text-red-600 mt-1">
+                    <div className="mt-1 text-xs text-red-600">
                       Password must be at least 8 characters and include an
                       uppercase letter, a lowercase letter, a number, and a
                       special symbol.
                     </div>
                   )}
               </div>
-              <div className="mb-2 relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="relative mb-2">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
                   Confirm New Password
                 </label>
                 <input
                   type={showConfirmPw ? "text" : "password"}
-                  className="w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 pr-10"
+                  className="w-full px-3 py-2 pr-10 text-gray-900 placeholder-gray-400 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                   value={confirmPw}
                   placeholder="Confirm new password"
                   onChange={(e) => setConfirmPw(e.target.value)}
@@ -327,7 +328,7 @@ export default function ProfileModal({
                 <button
                   type="button"
                   tabIndex={-1}
-                  className="absolute right-2 top-8 text-gray-500 hover:text-gray-700"
+                  className="absolute text-gray-500 right-2 top-8 hover:text-gray-700"
                   onClick={() => setShowConfirmPw((v) => !v)}
                   aria-label={showConfirmPw ? "Hide password" : "Show password"}
                 >
@@ -336,18 +337,20 @@ export default function ProfileModal({
                 {(touchedConfirm || formSubmitted) &&
                   confirmPw &&
                   newPw !== confirmPw && (
-                    <div className="text-xs text-red-600 mt-1">
+                    <div className="mt-1 text-xs text-red-600">
                       Passwords do not match.
                     </div>
                   )}
               </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition-all disabled:opacity-60 mt-2"
-                disabled={pwLoading}
-              >
-                {pwLoading ? "Updating..." : "Change Password"}
-              </button>
+              <div className="flex justify-center mt-4">
+                <button
+                  type="submit"
+                  className="p-2 font-semibold text-white transition-all bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 disabled:opacity-60"
+                  disabled={pwLoading}
+                >
+                  {pwLoading ? "Updating..." : "Change Password"}
+                </button>
+              </div>
               {/* Only show backend response (pwMsg) below the button if it is set and not a frontend validation error */}
               {pwMsg &&
                 !(
@@ -365,22 +368,22 @@ export default function ProfileModal({
       </div>
       {/* Logout Confirmation Modal */}
       {showLogoutPrompt && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center">
-          <div className="bg-white border rounded shadow p-6 w-80 text-center animate-fade-in">
-            <div className="mb-3 text-gray-800 font-medium text-lg">
+        <div className="fixed inset-0 flex items-center justify-center z-60">
+          <div className="bg-gradient-to-br from-white via-blue-50/80 to-indigo-50/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6 w-[90%] max-w-[320px] text-center animate-fade-in">
+            <div className="mb-4 text-lg font-semibold text-gray-800">
               Are you sure you want to log out?
             </div>
-            <div className="flex justify-center gap-4 mt-4">
+            <div className="flex justify-center gap-3 mt-6">
               <button
                 onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-semibold disabled:opacity-60"
+                className="px-6 py-2 font-semibold text-white transition-all bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 disabled:opacity-60"
                 disabled={logoutLoading}
               >
                 Yes
               </button>
               <button
                 onClick={() => setShowLogoutPrompt(false)}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded font-semibold"
+                className="px-6 py-2 font-semibold text-gray-800 transition-all bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
               >
                 No
               </button>

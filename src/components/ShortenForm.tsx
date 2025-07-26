@@ -122,21 +122,21 @@ export default function ShortenForm({
   };
 
   return (
-    <div className="w-full max-w-lg flex flex-col items-center px-2">
-      <div className="w-full bg-sky-100/80 backdrop-blur-lg rounded-2xl shadow-2xl shadow-blue-200/40 border border-blue-100 p-8 md:p-10 animate-fade-in-up flex flex-col items-center">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 text-center">
+    <div className="flex flex-col items-center w-full max-w-lg px-2">
+      <div className="flex flex-col items-center w-full p-6 border border-blue-100 shadow-2xl bg-sky-100/80 backdrop-blur-lg rounded-2xl shadow-blue-200/40 md:p-8 animate-fade-in-up">
+        <h1 className="mb-2 text-2xl font-bold text-center text-gray-900 md:text-3xl">
           Shorten your links
         </h1>
-        <p className="text-base text-gray-600 mb-6 text-center">
+        <p className="mb-6 text-base text-center text-gray-600">
           Paste your long URL below to get a short, shareable link instantly.
         </p>
         {!shortUrl ? (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
-            <div className="flex flex-col gap-3 w-full">
+          <form onSubmit={handleSubmit} className="flex flex-col w-full gap-4">
+            <div className="flex flex-col w-full gap-3">
               <div className="flex flex-col w-full">
                 <label
                   htmlFor="url"
-                  className="text-md font-bold text-gray-900 mb-1"
+                  className="mb-1 font-bold text-gray-900 text-md"
                 >
                   URL
                 </label>
@@ -144,8 +144,8 @@ export default function ShortenForm({
                   id="url"
                   type="url"
                   required
-                  placeholder="https://your-long-link.com/example"
-                  className="border border-blue-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 bg-white/90 placeholder-gray-400 text-base transition-all duration-300 shadow-sm w-full min-w-0"
+                  placeholder="https://your-long-link.com"
+                  className="w-full min-w-0 px-4 py-3 text-base text-gray-900 placeholder-gray-400 transition-all duration-300 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/90"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   disabled={loading}
@@ -154,7 +154,7 @@ export default function ShortenForm({
               <div className="flex flex-col w-full">
                 <label
                   htmlFor="customAlias"
-                  className="text-md font-bold text-gray-900 mb-1"
+                  className="mb-1 font-bold text-gray-900 text-md"
                 >
                   Alias{" "}
                   <span className="text-xs font-normal text-gray-600 align-middle">
@@ -165,7 +165,7 @@ export default function ShortenForm({
                   id="customAlias"
                   type="text"
                   placeholder="Custom alias (min 6 chars)"
-                  className="border border-blue-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 bg-white/90 placeholder-gray-400 text-sm transition-all duration-300 shadow-sm w-full min-w-0"
+                  className="w-full min-w-0 px-4 py-2 text-sm text-gray-900 placeholder-gray-400 transition-all duration-300 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/90"
                   value={customAlias}
                   onChange={(e) => setCustomAlias(e.target.value)}
                   disabled={loading}
@@ -174,12 +174,12 @@ export default function ShortenForm({
             </div>
             <button
               type="submit"
-              className="bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-400 text-white rounded-lg px-6 py-3 font-bold text-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+              className="px-6 py-3 text-lg font-bold text-white transition-all duration-300 rounded-lg shadow-lg bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-400 hover:scale-105 hover:shadow-xl focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
               disabled={loading}
             >
               {loading ? (
-                <span className="flex items-center gap-2 justify-center w-full">
-                  <FiLoader className="animate-spin h-5 w-5 text-white" />
+                <span className="flex items-center justify-center w-full gap-2">
+                  <FiLoader className="w-5 h-5 text-white animate-spin" />
                   Shortening...
                 </span>
               ) : (
@@ -188,18 +188,18 @@ export default function ShortenForm({
             </button>
           </form>
         ) : (
-          <div className="w-full flex flex-col gap-6 items-center">
-            <div className="w-full flex flex-col gap-2">
-              <span className="text-gray-800 font-semibold">Original URL:</span>
+          <div className="flex flex-col items-center w-full gap-6">
+            <div className="flex flex-col w-full gap-2">
+              <span className="font-semibold text-gray-800">Original URL:</span>
               <div className="flex items-center gap-2">
                 <input
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-100 text-gray-700 text-sm cursor-text select-all focus:outline-none focus:border-gray-300 focus:shadow-none focus:ring-0 active:border-gray-300 active:shadow-none hover:border-gray-300"
+                  className="w-full px-4 py-2 text-sm text-gray-700 bg-gray-100 border border-gray-300 rounded-lg select-all cursor-text focus:outline-none focus:border-gray-300 focus:shadow-none focus:ring-0 active:border-gray-300 active:shadow-none hover:border-gray-300"
                   value={url}
                   readOnly
                   tabIndex={-1}
                 />
                 <button
-                  className="px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg font-semibold text-xs shadow transition-all"
+                  className="px-3 py-2 text-xs font-semibold text-blue-700 transition-all bg-blue-100 rounded-lg shadow hover:bg-blue-200"
                   title="Copy"
                   onClick={() => handleCopy(url, "original")}
                   type="button"
@@ -212,17 +212,18 @@ export default function ShortenForm({
                 </button>
               </div>
             </div>
-            <div className="w-full flex flex-col gap-2">
-              <span className="text-gray-800 font-semibold">Short URL:</span>
-              <div className="flex items-center gap-2">
+            <div className="flex flex-col w-full gap-2">
+              <span className="font-semibold text-gray-800">Short URL:</span>
+              {/* Large screens: Original layout (input + buttons in same row) */}
+              <div className="items-center hidden gap-2 sm:flex">
                 <input
-                  className="w-full border border-blue-200 rounded-lg px-4 py-2 bg-blue-50 text-blue-800 font-bold text-sm cursor-text select-all focus:outline-none focus:border-blue-200 focus:shadow-none focus:ring-0 active:border-blue-200 active:shadow-none hover:border-blue-200"
+                  className="w-full px-4 py-2 text-sm font-bold text-blue-800 border border-blue-200 rounded-lg select-all bg-blue-50 cursor-text focus:outline-none focus:border-blue-200 focus:shadow-none focus:ring-0 active:border-blue-200 active:shadow-none hover:border-blue-200"
                   value={shortUrl}
                   readOnly
                   tabIndex={-1}
                 />
                 <button
-                  className="px-3 py-2 bg-blue-100 hover:bg-blue-100 text-blue-700 rounded-lg font-semibold text-xs shadow transition-all"
+                  className="px-3 py-2 text-xs font-semibold text-blue-700 transition-all bg-blue-100 rounded-lg shadow hover:bg-blue-100"
                   title="Copy"
                   onClick={() => handleCopy(shortUrl, "short")}
                   type="button"
@@ -235,7 +236,7 @@ export default function ShortenForm({
                 </button>
                 {shortUrl && (
                   <button
-                    className="p-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="p-1 text-blue-700 bg-blue-100 rounded hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     onClick={() => setShowQR(true)}
                     type="button"
                     title="Show QR Code"
@@ -246,7 +247,7 @@ export default function ShortenForm({
                 )}
                 {shortUrl && (
                   <button
-                    className="p-1 text-gray-700 hover:text-blue-700 hover:scale-110 transition-all"
+                    className="p-1 text-gray-700 transition-all hover:text-blue-700 hover:scale-110"
                     onClick={() =>
                       window.open(shortUrl, "_blank", "noopener,noreferrer")
                     }
@@ -257,6 +258,53 @@ export default function ShortenForm({
                     <FiExternalLink className="w-4 h-4" />
                   </button>
                 )}
+              </div>
+              {/* Small screens: Separate rows (input on top, centered buttons below) */}
+              <div className="flex flex-col gap-2 sm:hidden">
+                <input
+                  className="w-full px-4 py-2 text-sm font-bold text-blue-800 border border-blue-200 rounded-lg select-all bg-blue-50 cursor-text focus:outline-none focus:border-blue-200 focus:shadow-none focus:ring-0 active:border-blue-200 active:shadow-none hover:border-blue-200"
+                  value={shortUrl}
+                  readOnly
+                  tabIndex={-1}
+                />
+                <div className="flex items-center justify-center gap-2">
+                  <button
+                    className="px-3 py-2 text-xs font-semibold text-blue-700 transition-all bg-blue-100 rounded-lg shadow hover:bg-blue-100"
+                    title="Copy"
+                    onClick={() => handleCopy(shortUrl, "short")}
+                    type="button"
+                  >
+                    {copied.type === "short" ? (
+                      <FiCheck className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <FiCopy className="w-4 h-4" />
+                    )}
+                  </button>
+                  {shortUrl && (
+                    <button
+                      className="p-1 text-blue-700 bg-blue-100 rounded hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      onClick={() => setShowQR(true)}
+                      type="button"
+                      title="Show QR Code"
+                      aria-label="Show QR Code"
+                    >
+                      <MdQrCode className="w-4 h-4" />
+                    </button>
+                  )}
+                  {shortUrl && (
+                    <button
+                      className="p-1 text-gray-700 transition-all hover:text-blue-700 hover:scale-110"
+                      onClick={() =>
+                        window.open(shortUrl, "_blank", "noopener,noreferrer")
+                      }
+                      type="button"
+                      title="Open short URL in new tab"
+                      aria-label="Open short URL in new tab"
+                    >
+                      <FiExternalLink className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
             {showQR &&
@@ -275,7 +323,7 @@ export default function ShortenForm({
                 document.body
               )}
             <button
-              className="mt-4 px-5 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-semibold text-sm shadow transition-all"
+              className="px-5 py-2 mt-0 text-sm font-semibold text-gray-800 transition-all bg-gray-200 rounded-lg shadow hover:bg-gray-300"
               onClick={handleReset}
               type="button"
             >
@@ -284,8 +332,8 @@ export default function ShortenForm({
           </div>
         )}
         {error && (
-          <div className="mt-4 animate-fade-in-down w-full">
-            <div className="p-3 bg-red-100 rounded-lg text-red-800 font-semibold shadow border border-red-200 text-center">
+          <div className="w-full mt-4 animate-fade-in-down">
+            <div className="p-3 font-semibold text-center text-red-800 bg-red-100 border border-red-200 rounded-lg shadow">
               {error}
             </div>
           </div>

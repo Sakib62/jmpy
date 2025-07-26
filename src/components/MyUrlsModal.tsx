@@ -115,7 +115,7 @@ export default function MyUrlsModal({
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-        <div className="bg-sky-200/60 backdrop-blur-lg rounded-2xl shadow-2xl shadow-blue-200/40 border border-blue-100 p-4 md:p-6 w-full max-w-md sm:max-w-lg md:max-w-2xl relative animate-fade-in-up overflow-y-auto max-h-[90vh] px-2">
+        <div className="bg-sky-200/60 backdrop-blur-lg rounded-2xl shadow-2xl shadow-blue-200/40 border border-blue-100 p-4 md:p-6 w-full max-w-md sm:max-w-lg md:max-w-2xl relative animate-fade-in-up overflow-y-auto max-h-[75vh] px-2">
           <button
             className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl"
             onClick={onClose}

@@ -87,7 +87,7 @@ export default function ResetPasswordPage() {
         </div>
         {/* Modal overlay (interactive) */}
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm animate-fade-in-up flex flex-col items-center border border-gray-200 pointer-events-auto">
+          <div className="bg-gradient-to-br from-white via-blue-50/80 to-indigo-50/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6 sm:p-8 w-[90%] max-w-[320px] sm:max-w-sm animate-fade-in-up flex flex-col items-center pointer-events-auto">
             <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
             <div className="text-lg font-semibold text-gray-800">
               Signing you in...
@@ -110,8 +110,8 @@ export default function ResetPasswordPage() {
       </div>
       {/* Modal overlay (interactive) */}
       <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm animate-fade-in-up border border-gray-200 pointer-events-auto">
-          <h2 className="text-2xl font-bold mb-6 text-center text-gray-900">
+        <div className="bg-gradient-to-br from-white via-blue-50/80 to-indigo-50/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6 sm:p-8 w-[90%] max-w-[320px] sm:max-w-sm animate-fade-in-up pointer-events-auto">
+          <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center text-gray-900">
             Set New Password
           </h2>
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -120,7 +120,7 @@ export default function ResetPasswordPage() {
                 type={showNewPw ? "text" : "password"}
                 required
                 placeholder="New password"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm pr-10 text-base"
+                className="w-full px-4 py-2 pr-10 text-gray-900 placeholder-gray-400 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-base"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 disabled={loading}
@@ -146,7 +146,7 @@ export default function ResetPasswordPage() {
                 type={showConfirmPw ? "text" : "password"}
                 required
                 placeholder="Confirm new password"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm pr-10 text-base"
+                className="w-full px-4 py-2 pr-10 text-gray-900 placeholder-gray-400 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-base"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={loading}
@@ -168,7 +168,7 @@ export default function ResetPasswordPage() {
             )}
             <button
               type="submit"
-              className="bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold text-base hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 mt-2"
+              className="px-4 py-2 font-semibold text-white transition-all bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 mt-2 text-base"
               disabled={loading}
             >
               {loading ? "Updating..." : "Set Password"}

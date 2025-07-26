@@ -131,16 +131,16 @@ export default function AuthModal({
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-sm relative animate-fade-in-up">
+      <div className="bg-gradient-to-br from-white via-blue-50/80 to-indigo-50/60 backdrop-blur-sm rounded-xl shadow-2xl border border-white/20 p-6 sm:p-8 w-[90%] max-w-[320px] sm:max-w-sm relative animate-fade-in-up">
         <button
-          className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl"
+          className="absolute text-3xl text-gray-500/60 top-3 right-3 hover:text-gray-600"
           onClick={onClose}
         >
           &times;
         </button>
         {showForgotPw ? (
           <>
-            <h2 className="text-xl font-bold mb-4 text-center text-gray-900 flex items-center justify-center gap-2">
+            <h2 className="flex items-center justify-center gap-2 mb-4 text-xl font-bold text-center text-gray-900">
               <FiMail className="inline-block mb-1" /> Reset Password
             </h2>
             <form
@@ -151,7 +151,7 @@ export default function AuthModal({
                 type="email"
                 required
                 placeholder="Enter your email"
-                className="border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+                className="px-4 py-2 text-gray-900 placeholder-gray-400 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                 value={forgotEmail}
                 onChange={(e) => setForgotEmail(e.target.value)}
                 disabled={forgotLoading}
@@ -159,19 +159,19 @@ export default function AuthModal({
               {forgotSubmitted &&
                 forgotEmail &&
                 !validateEmail(forgotEmail) && (
-                  <div className="text-xs text-red-600 mt-0 ml-1">
+                  <div className="mt-0 ml-1 text-xs text-red-600">
                     Enter a valid email address.
                   </div>
                 )}
               <button
                 type="submit"
-                className="bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+                className="px-4 py-2 font-semibold text-white transition-all bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
                 disabled={forgotLoading}
               >
                 {forgotLoading ? "Sending..." : "Send Reset Link"}
               </button>
             </form>
-            <div className="text-sm text-center mt-3 text-gray-700">
+            <div className="mt-3 text-sm text-center text-gray-700">
               <button
                 className="text-blue-600 hover:underline"
                 onClick={() => setShowForgotPw(false)}
@@ -182,7 +182,7 @@ export default function AuthModal({
           </>
         ) : (
           <>
-            <h2 className="text-xl font-bold mb-4 text-center text-gray-900">
+            <h2 className="mb-4 text-xl font-bold text-center text-gray-900">
               {isSignUp ? "Sign Up" : "Sign In"}
             </h2>
             <form className="flex flex-col gap-4" onSubmit={handleAuth}>
@@ -192,7 +192,7 @@ export default function AuthModal({
                     type="email"
                     required
                     placeholder="Email"
-                    className="border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+                    className="px-4 py-2 text-gray-900 placeholder-gray-400 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                     value={signUpEmail}
                     onChange={(e) => setSignUpEmail(e.target.value)}
                     onBlur={() => setTouchedEmail(true)}
@@ -201,7 +201,7 @@ export default function AuthModal({
                   {(touchedEmail || formSubmitted) &&
                     signUpEmail &&
                     !validateEmail(signUpEmail) && (
-                      <div className="text-xs text-red-600 mt-0 ml-1">
+                      <div className="mt-0 ml-1 text-xs text-red-600">
                         Enter a valid email address.
                       </div>
                     )}
@@ -210,7 +210,7 @@ export default function AuthModal({
                       type={showPw ? "text" : "password"}
                       required
                       placeholder="Password"
-                      className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm pr-10"
+                      className="w-full px-4 py-2 pr-10 text-gray-900 placeholder-gray-400 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                       value={signUpPassword}
                       onChange={(e) => setSignUpPassword(e.target.value)}
                       onBlur={() => setTouchedPw(true)}
@@ -219,7 +219,7 @@ export default function AuthModal({
                     <button
                       type="button"
                       tabIndex={-1}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                      className="absolute text-gray-500 -translate-y-1/2 right-3 top-1/2 hover:text-gray-700"
                       onClick={() => setShowPw((v) => !v)}
                       aria-label={showPw ? "Hide password" : "Show password"}
                     >
@@ -229,7 +229,7 @@ export default function AuthModal({
                   {(touchedPw || formSubmitted) &&
                     signUpPassword &&
                     !validatePassword(signUpPassword) && (
-                      <div className="text-xs text-red-600 mt-0 ml-1">
+                      <div className="mt-0 ml-1 text-xs text-red-600">
                         Password must be at least 8 characters and include an
                         uppercase letter, a lowercase letter, a number, and a
                         symbol.
@@ -242,7 +242,7 @@ export default function AuthModal({
                     type="email"
                     required
                     placeholder="Email"
-                    className="border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+                    className="px-4 py-2 text-gray-900 placeholder-gray-400 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                     value={signInEmail}
                     onChange={(e) => setSignInEmail(e.target.value)}
                     onBlur={() => setTouchedEmail(true)}
@@ -251,7 +251,7 @@ export default function AuthModal({
                   {(touchedEmail || formSubmitted) &&
                     signInEmail &&
                     !validateEmail(signInEmail) && (
-                      <div className="text-xs text-red-600 mt-0 ml-1">
+                      <div className="mt-0 ml-1 text-xs text-red-600">
                         Enter a valid email address.
                       </div>
                     )}
@@ -260,7 +260,7 @@ export default function AuthModal({
                       type={showPw ? "text" : "password"}
                       required
                       placeholder="Password"
-                      className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm pr-10"
+                      className="w-full px-4 py-2 pr-10 text-gray-900 placeholder-gray-400 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                       value={signInPassword}
                       onChange={(e) => setSignInPassword(e.target.value)}
                       onBlur={() => setTouchedPw(true)}
@@ -269,7 +269,7 @@ export default function AuthModal({
                     <button
                       type="button"
                       tabIndex={-1}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                      className="absolute text-gray-500 -translate-y-1/2 right-3 top-1/2 hover:text-gray-700"
                       onClick={() => setShowPw((v) => !v)}
                       aria-label={showPw ? "Hide password" : "Show password"}
                     >
@@ -279,7 +279,7 @@ export default function AuthModal({
                   {(touchedPw || formSubmitted) &&
                     signInPassword &&
                     !validatePassword(signInPassword) && (
-                      <div className="text-xs text-red-600 mt-0 ml-1">
+                      <div className="mt-0 ml-1 text-xs text-red-600">
                         Password must be at least 8 characters and include an
                         uppercase letter, a lowercase letter, a number, and a
                         symbol.
@@ -289,7 +289,7 @@ export default function AuthModal({
               )}
               <button
                 type="submit"
-                className="bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+                className="px-4 py-2 font-semibold text-white transition-all bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
                 disabled={loading}
               >
                 {loading
@@ -301,7 +301,7 @@ export default function AuthModal({
                   : "Sign In"}
               </button>
             </form>
-            <div className="text-sm text-center mt-3 text-gray-700">
+            <div className="mt-3 text-sm text-center text-gray-700">
               {isSignUp ? (
                 <>
                   Already have an account?{" "}
@@ -323,7 +323,7 @@ export default function AuthModal({
                   </button>
                   <br />
                   <button
-                    className="text-blue-600 hover:underline mt-2"
+                    className="mt-2 text-blue-600 hover:underline"
                     onClick={() => setShowForgotPw(true)}
                     type="button"
                   >

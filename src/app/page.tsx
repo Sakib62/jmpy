@@ -46,7 +46,7 @@ export default function Home() {
   }, [user, justSignedUp]);
 
   return (
-    <div className="min-h-screen flex flex-col w-full bg-gradient-to-br from-blue-900 via-indigo-900 to-gray-900 animate-bg-gradient">
+    <div className="flex flex-col w-full min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-gray-900 animate-bg-gradient">
       <Header
         user={user}
         onSignIn={() => setAuthOpen(true)}
@@ -70,8 +70,8 @@ export default function Home() {
         user={user}
         setUser={setUser}
       />
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 md:py-16">
-        <div className="w-full max-w-lg mx-auto flex flex-col items-center justify-center">
+      <main className="flex flex-col items-center justify-center flex-1 px-4 py-6 md:py-12">
+        <div className="flex flex-col items-center justify-center w-full max-w-lg mx-auto">
           <ShortenForm user={user} onShorten={() => {}} />
         </div>
       </main>
