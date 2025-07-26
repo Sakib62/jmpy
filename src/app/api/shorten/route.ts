@@ -13,8 +13,10 @@ function generateShortCode(length = 6) {
 }
 
 export async function POST(req: NextRequest) {
-  // Rate limiting
-  const rate = await rateLimit(req);
+  const { url, customAlias, userId } = await req.json();
+  
+  // Rate limiting (pass userId to get different limits)
+  const rate = await rateLimit(req, userId);
   if (!rate.allowed) {
     return NextResponse.json(
       {
@@ -25,8 +27,6 @@ export async function POST(req: NextRequest) {
       { status: 429 }
     );
   }
-
-  const { url, customAlias, userId } = await req.json();
   if (!url || typeof url !== "string") {
     return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
   }
