@@ -67,8 +67,8 @@ export default function ShortenForm({
       setLoading(false);
       return;
     }
-    if (customAlias && customAlias.length > 16) {
-      toast.error("Max length of Alias is 16 characters.");
+    if (customAlias && customAlias.length > 32) {
+      toast.error("Max length of Alias is 32 characters.");
       setLoading(false);
       return;
     }
@@ -170,7 +170,7 @@ export default function ShortenForm({
                 <input
                   id="customAlias"
                   type="text"
-                  placeholder="Custom alias (min 6 chars)"
+                  placeholder="6 to 32 chars ( a-z, A-Z, 0-9, '-', '_' )"
                   className="w-full min-w-0 px-4 py-2 text-sm text-gray-900 placeholder-gray-400 transition-all duration-300 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/90"
                   value={customAlias}
                   onChange={(e) => setCustomAlias(e.target.value)}

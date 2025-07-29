@@ -49,6 +49,12 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+    if (customAlias.length > 32) {
+      return NextResponse.json(
+        { error: "Alias must be at most 32 characters" },
+        { status: 400 }
+      );
+    }
     // Check if custom alias is taken
     const { data: aliasExists } = await supabase
       .from("urls")
