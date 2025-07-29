@@ -4,7 +4,7 @@ import { rateLimit } from "./rateLimit";
 
 function generateShortCode(length = 6) {
   const chars =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
   let code = "";
   for (let i = 0; i < length; i++) {
     code += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -32,11 +32,14 @@ export async function POST(req: NextRequest) {
 
   let code;
   if (customAlias) {
-    // Validate custom alias: only a-z, A-Z, 0-9 allowed
-    const aliasRegex = /^[a-zA-Z0-9]+$/;
+    // Validate custom alias: only a-z, A-Z, 0-9, - and _ allowed
+    const aliasRegex = /^[a-zA-Z0-9_-]+$/;
     if (!aliasRegex.test(customAlias)) {
       return NextResponse.json(
-        { error: "Invalid alias format" },
+        {
+          error:
+            "Invalid alias format. Only letters, numbers, dashes (-), and underscores (_) are allowed.",
+        },
         { status: 400 }
       );
     }

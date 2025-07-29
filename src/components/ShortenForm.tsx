@@ -57,10 +57,8 @@ export default function ShortenForm({
       return;
     }
     
-    if (customAlias && !/^[a-zA-Z0-9]+$/.test(customAlias)) {
-      toast.error(
-        "Invalid alias format. Only English letters (A-Z, a-z) and numbers (0-9) are allowed."
-      );
+    if (customAlias && !/^[a-zA-Z0-9_-]+$/.test(customAlias)) {
+      toast.error("Invalid alias format. Only letters, numbers, dashes (-), and underscores (_) are allowed.");
       setLoading(false);
       return;
     }
