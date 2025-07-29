@@ -14,7 +14,6 @@ function generateShortCode(length = 6) {
 
 export async function POST(req: NextRequest) {
   const { url, customAlias, userId } = await req.json();
-  
   // Rate limiting (pass userId to get different limits)
   const rate = await rateLimit(req, userId);
   if (!rate.allowed) {
@@ -33,6 +32,14 @@ export async function POST(req: NextRequest) {
 
   let code;
   if (customAlias) {
+    // Validate custom alias: only a-z, A-Z, 0-9 allowed
+    const aliasRegex = /^[a-zA-Z0-9]+$/;
+    if (!aliasRegex.test(customAlias)) {
+      return NextResponse.json(
+        { error: "Invalid alias format" },
+        { status: 400 }
+      );
+    }
     if (typeof customAlias !== "string" || customAlias.length < 6) {
       return NextResponse.json(
         { error: "Alias must be at least 6 characters" },
